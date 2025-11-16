@@ -1,3 +1,5 @@
 Flask
 Werkzeug>=2.3.3
 flask-swagger-ui
+flask-jwt-extended
+flask-jwt-extended
