@@ -1,34 +1,32 @@
-from flask import Flask, jsonify
-from flask_swagger_ui import get_swaggerui_blueprint
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+import os
+import json
+from flask import jsonify, Response
 
-app = Flask(__name__)
+@app.route('/swagger.json')
+def swagger_json():
+    try:
+        path = os.path.join(app.static_folder, 'swagger.json')
+        with open(path, 'r', encoding='utf-8') as f:
+            data = f.read()
 
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'
-jwt = JWTManager(app)
+        json.loads(data)
 
-SWAGGER_URL = '/swagger'
-API_DOC_URL = '/static/swagger.json'
-swaggerui_blueprint = get_swaggerui_blueprint(SWAGGER_URL, API_DOC_URL)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+        return Response(
+            response=data,
+            status=200,
+            mimetype='application/json',
+            headers={
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+            }
+        )
 
-@app.route('/')
-def home():
-    return jsonify(message="API is running")
+    except FileNotFoundError:
+        return jsonify(error="swagger.json not found"), 404
 
-@app.route('/items', methods=['GET'])
-def get_items():
-    return jsonify(items=["item1", "item2", "item3"])
+    except json.JSONDecodeError as e:
+        return jsonify(error="invalid swagger.json", detail=str(e)), 500
 
-@app.route('/login', methods=['POST'])
-def login():
-    access_token = create_access_token(identity="user")
-    return jsonify(access_token=access_token)
-
-@app.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    return jsonify(message="Protected route")
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=1313)
+    except Exception as ex:
+        return jsonify(error="unexpected error", detail=str(ex)), 500

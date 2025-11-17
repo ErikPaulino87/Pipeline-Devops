@@ -1,19 +1,17 @@
-FROM python:3.9-slim
+FROM python:3.11-slim
 
-# Definir o diretório de trabalho
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copiar dependências
-COPY requirements.txt requirements.txt
+COPY requirements.txt .
+RUN python -m pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalar dependências
-RUN pip install -r requirements.txt
-
-# Copiar os arquivos da API para o container
 COPY . .
 
-# Expor a porta 1313
 EXPOSE 1313
 
-# Comando para rodar a aplicação
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:1313", "app:app"]
