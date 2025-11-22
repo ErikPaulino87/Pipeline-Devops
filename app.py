@@ -1,10 +1,12 @@
+import os
 from flask import Flask, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 
 app = Flask(__name__)
 
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'dev_secret_key')
+
 jwt = JWTManager(app)
 
 SWAGGER_URL = '/swagger'
@@ -31,4 +33,5 @@ def protected():
     return jsonify(message="Protected route")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=1313)
+    port = int(os.environ.get('PORT', 1313))
+    app.run(host='0.0.0.0', port=port)
