@@ -5,21 +5,24 @@
     "version": "1.0.0",
     "description": "Documentação mínima para Swagger UI"
   },
+  "servers": [
+    { "url": "/" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
     "/": {
       "get": {
         "summary": "Home",
         "responses": {
-          "200": {
-            "description": "API running",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
+          "200": { "description": "OK" }
         }
       }
     },
@@ -28,11 +31,57 @@
         "summary": "Lista itens",
         "responses": {
           "200": {
-            "description": "Lista de itens",
+            "description": "OK",
             "content": {
               "application/json": {}
             }
           }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login - gerar token",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token gerado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/protected": {
+      "get": {
+        "summary": "Rota protegida",
+        "security": [
+          { "bearerAuth": [] }
+        ],
+        "responses": {
+          "200": { "description": "Acesso permitido" },
+          "401": { "description": "Não autorizado" }
         }
       }
     }
