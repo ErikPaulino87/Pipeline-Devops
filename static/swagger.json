@@ -17,6 +17,11 @@
       }
     }
   },
+
+  "security": [
+    { "bearerAuth": [] }
+  ],
+
   "paths": {
     "/": {
       "get": {
@@ -79,9 +84,22 @@
         "security": [
           { "bearerAuth": [] }
         ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Token JWT. Exemplo: 'Bearer eyJ...'",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        ],
         "responses": {
           "200": { "description": "Acesso permitido" },
-          "401": { "description": "Não autorizado" }
+          "401": { "description": "Não autorizado" },
+          "422": { "description": "Header Authorization mal formatado" }
         }
       }
     }
