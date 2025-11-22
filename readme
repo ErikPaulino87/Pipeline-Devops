@@ -1,0 +1,117 @@
+```markdown
+# Pipeline-DevOps: API Flask com Docker, Swagger e CI/CD  
+
+Repositório: [ErikPaulino87/Pipeline-Devops](https://github.com/ErikPaulino87/Pipeline-Devops.git)
+
+---
+
+## Descrição do Projeto
+
+Este projeto demonstra um ciclo completo de desenvolvimento de uma API construída com **Flask**, incluindo:  
+- Containerização com **Docker**  
+- Documentação automática via **Swagger**  
+- Autenticação com **JWT**  
+- Testes unitários com `unittest` e `Werkzeug`  
+- Integração contínua e deploy automatizado usando **GitHub Actions** (Test → Build → Deploy)
+
+---
+
+## Funcionalidades
+
+1. **API REST**: Endpoints protegidos com JWT.  
+2. **Documentação Swagger**: para visualizar e testar os endpoints de maneira interativa.  
+3. **Docker**: permite executar a API de forma isolada e padronizada.  
+4. **Testes**: cobertura básica de testes unitários para garantir qualidade e estabilidade.  
+5. **CI/CD**: pipeline no GitHub Actions para automatizar testes, build da imagem Docker e deploy.
+
+---
+
+## Tecnologias Usadas
+
+- **Python** + **Flask**  
+- **Docker** + **Docker Compose**  
+- **GitHub Actions**  
+- **Swagger / OpenAPI**  
+- **JWT** para autenticação  
+- **unittest** + **Werkzeug** para testes  
+
+---
+
+## Estrutura do Repositório
+
+```
+
+/
+|-- app.py                  # Arquivo principal da API Flask
+|-- requirements.txt        # Dependências Python
+|-- Dockerfile              # Para build da imagem da API
+|-- docker-compose.yml      # Orquestração de containers
+|-- static/swagger.json     # Definição da API para Swagger
+|-- .github/                 # Pipelines do GitHub Actions
+|    |-- workflows/
+|        |-- ci-cd.yml       # Workflow para Test → Build → Deploy
+|-- tests/                   # Diretório com testes unitários
+|    |-- test_app.py
+|-- README.md                # Este arquivo
+
+````
+
+---
+
+## Como Rodar Localmente
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/ErikPaulino87/Pipeline-Devops.git
+   cd Pipeline-Devops
+````
+
+2. Subir com Docker Compose:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+3. Acesse a API em `http://localhost:1313/` (ou a porta que você configurou)
+
+4. Acesse a documentação Swagger em `http://localhost:1313/swagger`
+
+---
+
+## Testes
+
+Para rodar os testes unitários:
+
+```bash
+docker-compose run api python -m unittest discover
+```
+
+Ou, se estiver rodando local sem container:
+
+```bash
+python -m unittest discover
+```
+
+---
+
+## CI / CD com GitHub Actions
+
+A pipeline do GitHub Actions está configurada para executar:
+
+1. **Testes** — roda `unittest` para validar a API.
+2. **Build** — cria a imagem Docker da aplicação se os testes passarem.
+3. **Deploy** — faz deploy automático (dependendo da sua configuração) usando a imagem gerada.
+
+Você pode ver o workflow no arquivo `.github/workflows/ci-cd.yml`.
+
+---
+
+## Autenticação
+
+* Use o endpoint `POST /login` para obter um token JWT.
+* Para acessar rotas protegidas, envie no header:
+
+  ```
+  Authorization: Bearer <seu_token>
+  ```
