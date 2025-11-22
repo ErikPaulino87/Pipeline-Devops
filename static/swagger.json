@@ -17,30 +17,21 @@
       }
     }
   },
-
   "security": [
     { "bearerAuth": [] }
   ],
-
   "paths": {
     "/": {
       "get": {
         "summary": "Home",
-        "responses": {
-          "200": { "description": "OK" }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/items": {
       "get": {
         "summary": "Lista itens",
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {}
-            }
-          }
+          "200": { "description": "OK", "content": { "application/json": {} } }
         }
       }
     },
@@ -81,21 +72,7 @@
     "/protected": {
       "get": {
         "summary": "Rota protegida",
-        "security": [
-          { "bearerAuth": [] }
-        ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "description": "Token JWT. Exemplo: 'Bearer eyJ...'",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-          }
-        ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": { "description": "Acesso permitido" },
           "401": { "description": "Não autorizado" },
