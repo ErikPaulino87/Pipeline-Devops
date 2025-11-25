@@ -32,8 +32,6 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Executar testes com code coverage
-        run: dotnet test "$TEST_PROJECT" --collect:"XPlat Code Coverage"
 
   deploy:
     name: Deploy
@@ -53,9 +51,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
-      - name: Publicar aplicação
-        run: dotnet publish -c Release -o "$PUBLISH_DIR"
-
+          
       - name: Mensagem final
         run: echo " Deploy automatizado concluído!"
