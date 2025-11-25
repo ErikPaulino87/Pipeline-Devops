@@ -1,4 +1,4 @@
-name: CI - Tests
+name: CI - Build, Test e Deploy (.NET)
 
 on:
   push:
@@ -7,26 +7,63 @@ on:
     branches: [ main, master ]
 
 jobs:
-  test:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
         with:
-          python-version: '3.11'
+          dotnet-version: '8.0.x'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+      - name: Restaurar pacotes
+        run: dotnet restore "$SOLUTION"
 
-      - name: Run tests
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          python -m pytest -q
+      - name: Compilar solução
+        run: dotnet build "$SOLUTION" -c Release --no-restore
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Executar testes com code coverage
+        run: dotnet test "$TEST_PROJECT" --collect:"XPlat Code Coverage"
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: test
+    environment:
+      name: production
+      url: pipeline-devops-pi.vercel.app
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publicar aplicação
+        run: dotnet publish -c Release -o "$PUBLISH_DIR"
+
+      - name: Mensagem final
+        run: echo " Deploy automatizado concluído!"
