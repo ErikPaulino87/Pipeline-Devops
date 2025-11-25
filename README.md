@@ -1,56 +1,60 @@
-# 🚀 Pipeline DevOps – API Flask com Docker, Swagger, JWT e CI/CD
+# 🚀 Pipeline DevOps – API Flask 
 
-Este projeto demonstra uma API desenvolvida em **Flask**, containerizada com **Docker**, documentada com **Swagger**, protegida com **JWT**, testada com **unittest** e integrada a um pipeline de **CI/CD** via GitHub Actions.  
-A aplicação roda na porta **1313**.
+Este repositório contém uma API em **Flask** com **Docker**, **Swagger**, **JWT**, testes com **unittest** e pipeline **CI/CD**.  
+A aplicação pode ser acessada **localmente** ou pelo **deploy na nuvem (Vercel)**.
 
 ---
 
+## 🌐 Acesso na nuvem (deploy)
 
-## 🔧 Desenvolvimento da API
+A versão publicada está disponível em:
 
-A API foi criada usando Flask e possui rotas básicas, rotas protegidas por JWT e integração com Swagger para documentação.
+- API: **https://pipeline-devops-pi.vercel.app**  
+- Swagger: **https://pipeline-devops-pi.vercel.app/swagger**
 
-Instalação das dependências:
+---
 
+## ▶️ Acesso local (desenvolvimento)
+
+### 🔹 Rodar localmente (Python)
 ```bash
 pip install -r requirements.txt
+python app.py
 ```
+
+Acesse:
+- API: http://localhost:1313
+- Swagger: http://localhost:1313/swagger
 
 ---
 
-## 🐳 Dockerização
-
-### Criar imagem
+### 🔹 Rodar com Docker
 ```bash
 docker build -t api-flask .
-```
-
-### Executar container
-```bash
 docker run -p 1313:1313 api-flask
 ```
 
-### Docker Compose
+### 🔹 Docker Compose
 ```bash
 docker-compose up --build
 ```
 
 Acesse:
-
-👉 http://localhost:1313  
-👉 http://localhost:1313/swagger
+- API: http://localhost:1313
+- Swagger: http://localhost:1313/swagger
 
 ---
 
 ## 🔐 Autenticação JWT
 
-### Gerar token
+### Gerar token  
 POST:
 ```
-http://localhost:1313/login
+Local:  http://localhost:1313/login
+Nuvem:  https://pipeline-devops-pi.vercel.app/login
 ```
 
-### Acessar rota protegida
+### Acessar rota protegida  
 Header:
 ```
 Authorization: Bearer <token>
@@ -60,8 +64,7 @@ Authorization: Bearer <token>
 
 ## 🧪 Testes
 
-Testes automáticos com unittest:
-
+Executar testes:
 ```bash
 python -m unittest discover
 ```
@@ -72,19 +75,13 @@ python -m unittest discover
 
 A pipeline executa automaticamente:
 
-1. **Test** → Roda os testes unittest  
-2. **Build** → Constrói a imagem Docker  
-3. **Deploy** → Publica/roda a imagem (dependendo da configuração)
-
-Exemplo de deploy automático:
-
-```bash
-docker run -d -p 1313:1313 usuario/api-flask:latest
-```
+1. **Test** – Executa os testes automatizados  
+2. **Build** – Constrói a imagem Docker  
+3. **Deploy** – Publica/atualiza a aplicação na nuvem  
 
 ---
 
-## ▶️ Como rodar o projeto
+## ▶️ Como iniciar rapidamente
 
 ```bash
 git clone https://github.com/ErikPaulino87/Pipeline-Devops.git
@@ -92,6 +89,9 @@ cd Pipeline-Devops
 docker-compose up --build
 ```
 
-A aplicação estará funcionando na porta **1313**.
+A aplicação estará disponível em:
+
+👉 Local: http://localhost:1313  
+👉 Nuvem: https://pipeline-devops-pi.vercel.app
 
 ---
