@@ -5,20 +5,6 @@ A aplicação roda na porta **1313**.
 
 ---
 
-## 📁 Estrutura do Projeto
-
-```
-Pipeline-Devops/
-├─ app.py
-├─ requirements.txt
-├─ static/
-│  └─ swagger.json
-├─ Dockerfile
-├─ docker-compose.yml
-└─ tests/
-```
-
----
 
 ## 🔧 Desenvolvimento da API
 
