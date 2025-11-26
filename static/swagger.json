@@ -5,9 +5,6 @@
     "version": "1.0.0",
     "description": "Documentação mínima para Swagger UI"
   },
-  "servers": [
-    { "url": "/" }
-  ],
   "components": {
     "securitySchemes": {
       "bearerAuth": {
